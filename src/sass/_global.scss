@@ -1,0 +1,110 @@
+:root {
+  --text-color: hsla(211, 24%, 24%, 1);
+
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  line-height: normal;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  html {
+    font-size: calc(100vw / 1280 * 16);
+  }
+}
+
+@media screen and (min-width: 1024) {
+  html {
+    font-size: calc(100vw / 1440 * 14);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.container {
+  padding: 0 1rem;
+  max-width: 100%;
+  @media screen and (min-width: 1900px) {
+    padding: 0 1.5rem;
+    max-width: 1920px;
+  }
+}
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .horizontal-scrollbar {
+    padding-bottom: 10px;
+    &::-webkit-scrollbar {
+      height: 4px;
+      width: 4px;
+      background: gray;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    &::-webkit-scrollbar-thumb:horizontal {
+      background: #afb8c1;
+      border-radius: 10px;
+    }
+  }
+}
+
+@layer base {
+  :root {
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  .dark {
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}

@@ -1,0 +1,134 @@
+// @font-face {
+//   font-family: "Pretendard";
+//   src: ("/assets/fonts/Pretendard/Pretendard-Medium.eot");
+//   src: ("/assets/fonts/Pretendard/Pretendard-Medium.eot?#iefix")
+//       format("embedded-opentype"),
+//     ("/assets/fonts/Pretendard/Pretendard-Medium.woff2") format("woff2"),
+//     ("/assets/fonts/Pretendard/Pretendard-Medium.woff") format("woff"),
+//     ("/assets/fonts/Pretendard/Pretendard-Medium.ttf") format("truetype"),
+//     ("/assets/fonts/Pretendard/Pretendard-Medium.svg#Pretendard-Medium")
+//       format("svg");
+//   font-weight: 500;
+//   font-style: normal;
+//   font-display: swap;
+// }
+
+// @font-face {
+//   font-family: "Pretendard";
+//   src: ("/assets/fonts/Pretendard/Pretendard-Regular.eot");
+//   src: ("/assets/fonts/Pretendard/Pretendard-Regular.eot?#iefix")
+//       format("embedded-opentype"),
+//     ("/assets/fonts/Pretendard/Pretendard-Regular.woff2") format("woff2"),
+//     ("/assets/fonts/Pretendard/Pretendard-Regular.woff") format("woff"),
+//     ("/assets/fonts/Pretendard/Pretendard-Regular.ttf") format("truetype"),
+//     ("/assets/fonts/Pretendard/Pretendard-Regular.svg#Pretendard-Regular")
+//       format("svg");
+//   font-weight: normal;
+//   font-style: normal;
+//   font-display: swap;
+// }
+
+// @font-face {
+//   font-family: "Pretendard";
+//   src: ("/assets/fonts/Pretendard/Pretendard-SemiBold.eot");
+//   src: ("/assets/fonts/Pretendard/Pretendard-SemiBold.eot?#iefix")
+//       format("embedded-opentype"),
+//     ("/assets/fonts/Pretendard/Pretendard-SemiBold.woff2") format("woff2"),
+//     ("/assets/fonts/Pretendard/Pretendard-SemiBold.woff") format("woff"),
+//     ("/assets/fonts/Pretendard/Pretendard-SemiBold.ttf") format("truetype"),
+//     ("/assets/fonts/Pretendard/Pretendard-SemiBold.svg#Pretendard-SemiBold")
+//       format("svg");
+//   font-weight: 600;
+//   font-style: normal;
+//   font-display: swap;
+// }
+
+// @font-face {
+//   font-family: "Pretendard";
+//   src: ("/assets/fonts/Pretendard/Pretendard-Thin.eot");
+//   src: ("/assets/fonts/Pretendard/Pretendard-Thin.eot?#iefix")
+//       format("embedded-opentype"),
+//     ("/assets/fonts/Pretendard/Pretendard-Thin.woff2") format("woff2"),
+//     ("/assets/fonts/Pretendard/Pretendard-Thin.woff") format("woff"),
+//     ("/assets/fonts/Pretendard/Pretendard-Thin.ttf") format("truetype"),
+//     ("/assets/fonts/Pretendard/Pretendard-Thin.svg#Pretendard-Thin")
+//       format("svg");
+//   font-weight: 100;
+//   font-style: normal;
+//   font-display: swap;
+// }
+
+// @font-face {
+//   font-family: "Pretendard";
+//   src: ("/assets/fonts/Pretendard/Pretendard-Black.eot");
+//   src: ("/assets/fonts/Pretendard/Pretendard-Black.eot?#iefix")
+//       format("embedded-opentype"),
+//     ("/assets/fonts/Pretendard/Pretendard-Black.woff2") format("woff2"),
+//     ("/assets/fonts/Pretendard/Pretendard-Black.woff") format("woff"),
+//     ("/assets/fonts/Pretendard/Pretendard-Black.ttf") format("truetype"),
+//     ("/assets/fonts/Pretendard/Pretendard-Black.svg#Pretendard-Black")
+//       format("svg");
+//   font-weight: 900;
+//   font-style: normal;
+//   font-display: swap;
+// }
+
+// @font-face {
+//   font-family: "Pretendard";
+//   src: ("/assets/fonts/Pretendard/Pretendard-Bold.eot");
+//   src: ("/assets/fonts/Pretendard/Pretendard-Bold.eot?#iefix")
+//       format("embedded-opentype"),
+//     ("/assets/fonts/Pretendard/Pretendard-Bold.woff2") format("woff2"),
+//     ("/assets/fonts/Pretendard/Pretendard-Bold.woff") format("woff"),
+//     ("/assets/fonts/Pretendard/Pretendard-Bold.ttf") format("truetype"),
+//     ("/assets/fonts/Pretendard/Pretendard-Bold.svg#Pretendard-Bold")
+//       format("svg");
+//   font-weight: bold;
+//   font-style: normal;
+//   font-display: swap;
+// }
+
+// @font-face {
+//   font-family: "Pretendard";
+//   src: ("/assets/fonts/Pretendard/Pretendard-ExtraBold.eot");
+//   src: ("/assets/fonts/Pretendard/Pretendard-ExtraBold.eot?#iefix")
+//       format("embedded-opentype"),
+//     ("/assets/fonts/Pretendard/Pretendard-ExtraBold.woff2") format("woff2"),
+//     ("/assets/fonts/Pretendard/Pretendard-ExtraBold.woff") format("woff"),
+//     ("/assets/fonts/Pretendard/Pretendard-ExtraBold.ttf") format("truetype"),
+//     ("/assets/fonts/Pretendard/Pretendard-ExtraBold.svg#Pretendard-ExtraBold")
+//       format("svg");
+//   font-weight: bold;
+//   font-style: normal;
+//   font-display: swap;
+// }
+
+// @font-face {
+//   font-family: "Pretendard";
+//   src: ("/assets/fonts/Pretendard/Pretendard-ExtraLight.eot");
+//   src: ("/assets/fonts/Pretendard/Pretendard-ExtraLight.eot?#iefix")
+//       format("embedded-opentype"),
+//     ("/assets/fonts/Pretendard/Pretendard-ExtraLight.woff2") format("woff2"),
+//     ("/assets/fonts/Pretendard/Pretendard-ExtraLight.woff") format("woff"),
+//     ("/assets/fonts/Pretendard/Pretendard-ExtraLight.ttf") format("truetype"),
+//     ("/assets/fonts/Pretendard/Pretendard-ExtraLight.svg#Pretendard-ExtraLight")
+//       format("svg");
+//   font-weight: 200;
+//   font-style: normal;
+//   font-display: swap;
+// }
+
+// @font-face {
+//   font-family: "Pretendard";
+//   src: ("/assets/fonts/Pretendard/Pretendard-Light.eot");
+//   src: ("/assets/fonts/Pretendard/Pretendard-Light.eot?#iefix")
+//       format("embedded-opentype"),
+//     ("/assets/fonts/Pretendard/Pretendard-Light.woff2") format("woff2"),
+//     ("/assets/fonts/Pretendard/Pretendard-Light.woff") format("woff"),
+//     ("/assets/fonts/Pretendard/Pretendard-Light.ttf") format("truetype"),
+//     ("/assets/fonts/Pretendard/Pretendard-Light.svg#Pretendard-Light")
+//       format("svg");
+//   font-weight: 300;
+//   font-style: normal;
+//   font-display: swap;
+// }
