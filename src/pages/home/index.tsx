@@ -11,14 +11,24 @@ import {
   SelectValue,
 } from "../../components/ui/select";
 
+interface ResultFrame {
+  frame_index: number;
+  url: string;
+  summary?: string;
+  num_boxes?: number;
+  boxes?: any[];
+  vessel_type?: string;
+  class_distribution?: string;
+}
+
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [model, setModel] = useState<string>("");
   const [previewList, setPreviewList] = useState<string[]>([]);
-  const [resultList, setResultList] = useState<string[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [previewLoading, setPreviewLoading] = useState(false);
   const [resultLoading, setResultLoading] = useState(false);
+  const [resultFrames, setResultFrames] = useState<ResultFrame[]>([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -29,7 +39,7 @@ export default function Home() {
     setPreviewLoading(true);
     setFile(uploaded);
     setPreviewList([]);
-    setResultList([]);
+    setResultFrames([]);
     setSelectedIndex(0);
 
     const isTiff =
@@ -75,7 +85,7 @@ export default function Home() {
   const handleClear = () => {
     setFile(null);
     setPreviewList([]);
-    setResultList([]);
+    setResultFrames([]);
     setSelectedIndex(0);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
@@ -96,10 +106,24 @@ export default function Home() {
       const data = await response.json();
       const baseUrl = "http://localhost:8000";
 
-      if (data.is_tif && Array.isArray(data.results)) {
-        setResultList(data.results.map((url: string) => baseUrl + url));
+      if (data.is_tif && Array.isArray(data.frames)) {
+        const resultWithFullUrls = data.frames.map((frame: any) => ({
+          ...frame,
+          url: baseUrl + frame.url,
+        }));
+        setResultFrames(resultWithFullUrls);
       } else if (data.image_url) {
-        setResultList([baseUrl + data.image_url]);
+        setResultFrames([
+          {
+            frame_index: 0,
+            url: baseUrl + data.image_url,
+            summary: data.summary,
+            num_boxes: data.num_boxes,
+            boxes: data.boxes,
+            vessel_type: data.vessel_type,
+            class_distribution: data.class_distribution,
+          },
+        ]);
       }
     } catch (error) {
       console.error("Lỗi xử lý ảnh:", error);
@@ -109,7 +133,9 @@ export default function Home() {
   };
 
   const activePreview = previewList[selectedIndex] || null;
-  const activeResult = resultList[selectedIndex] || null;
+  const activeResult =
+    resultFrames.find((frame) => frame.frame_index === selectedIndex)?.url ||
+    null;
 
   return (
     <div className="w-screen min-h-screen bg-gray-50 flex items-center justify-center p-6">
@@ -137,10 +163,16 @@ export default function Home() {
             <div className="space-y-3">
               <Label className="text-base font-medium">Upload OCT image</Label>
               <div
-                onDrop={handleDrop}
-                onDragOver={(e) => e.preventDefault()}
-                onClick={() => fileInputRef.current?.click()}
-                className="w-full aspect-[4/3] bg-white border-2 border-dashed rounded-md flex items-center justify-center overflow-hidden cursor-pointer hover:bg-gray-50 relative"
+                onDrop={!file ? handleDrop : undefined}
+                onDragOver={!file ? (e) => e.preventDefault() : undefined}
+                onClick={
+                  !file ? () => fileInputRef.current?.click() : undefined
+                }
+                className={`w-full aspect-[4/3] bg-white ${
+                  file ? "border border-gray-300" : "border-2 border-dashed"
+                } rounded-md flex items-center justify-center overflow-hidden ${
+                  file ? "cursor-default" : "cursor-pointer hover:bg-gray-50"
+                } relative`}
               >
                 {previewLoading ? (
                   <div className="flex flex-col items-center gap-1 text-sm text-gray-500">
@@ -201,6 +233,37 @@ export default function Home() {
                   <span className="text-gray-400 text-sm">No results</span>
                 )}
               </div>
+              {resultFrames[selectedIndex] && (
+                <div className="text-sm text-gray-600 mt-1 space-y-1">
+                  {model === "model3" ? (
+                    <>
+                      <div>
+                        <strong>Vessel type:</strong>{" "}
+                        {resultFrames[selectedIndex].vessel_type || "Unknown"}
+                      </div>
+                      <div>
+                        <strong>Detected classes:</strong>{" "}
+                        {typeof resultFrames[selectedIndex]
+                          .class_distribution === "object"
+                          ? Object.entries(
+                              resultFrames[selectedIndex].class_distribution
+                            )
+                              .map(([k, v]) => `${k}: ${v}`)
+                              .join(", ")
+                          : resultFrames[selectedIndex].class_distribution ||
+                            "None"}
+                      </div>
+                    </>
+                  ) : (
+                    resultFrames[selectedIndex].summary && (
+                      <div>
+                        <strong>Summary:</strong>{" "}
+                        {resultFrames[selectedIndex].summary}
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
@@ -221,13 +284,35 @@ export default function Home() {
             </div>
           )}
 
-          <Button
-            className="w-full h-[40px] mt-4"
-            onClick={handleGenerate}
-            disabled={!file || !model || resultLoading}
-          >
-            {resultLoading ? "Processing..." : "Generate"}
-          </Button>
+          {model === "model3" ? (
+            <div className="flex flex-col md:flex-row gap-2 w-full mt-4">
+              <Button
+                className="md:w-1/2 w-full h-[40px]"
+                onClick={handleGenerate}
+                disabled={!file || !model || resultLoading}
+              >
+                {resultLoading ? "Processing..." : "Generate"}
+              </Button>
+
+              <Button
+                className="md:w-1/2 w-full h-[40px]"
+                variant="outline"
+                // onClick={handleGenerate3D}
+                // disabled={!file || resultLoading}
+                disabled
+              >
+                Generate 3D
+              </Button>
+            </div>
+          ) : (
+            <Button
+              className="w-full h-[40px] mt-4"
+              onClick={handleGenerate}
+              disabled={!file || !model || resultLoading}
+            >
+              {resultLoading ? "Processing..." : "Generate"}
+            </Button>
+          )}
         </CardContent>
       </Card>
     </div>
