@@ -145,7 +145,12 @@ export default function Home() {
 
           <div className="space-y-2">
             <Label htmlFor="model">Select model</Label>
-            <Select onValueChange={setModel}>
+            <Select
+              onValueChange={(value) => {
+                setModel(value);
+                setResultFrames([]);
+              }}
+            >
               <SelectTrigger id="model" className="w-full">
                 <SelectValue placeholder="Select a model" />
               </SelectTrigger>
@@ -301,7 +306,7 @@ export default function Home() {
                 // disabled={!file || resultLoading}
                 disabled
               >
-                Generate 3D
+                Generate 3D (Coming Soon)
               </Button>
             </div>
           ) : (
