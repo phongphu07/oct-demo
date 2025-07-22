@@ -51,13 +51,13 @@ export default function Home() {
       formData.append("file", uploaded);
 
       try {
-        const response = await fetch("http://localhost:8000/uploadImage", {
+        const response = await fetch("https://levy-items-holly-learned.trycloudflare.com/uploadImage", {
           method: "POST",
           body: formData,
         });
 
         const data = await response.json();
-        const baseUrl = "http://localhost:8000";
+        const baseUrl = "https://levy-items-holly-learned.trycloudflare.com";
         const urls = data.image_urls.map((url: string) => baseUrl + url);
         setPreviewList(urls);
       } catch (error) {
@@ -98,13 +98,13 @@ export default function Home() {
     formData.append("model", model);
     setResultLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/predict", {
+      const response = await fetch("https://levy-items-holly-learned.trycloudflare.com/predict", {
         method: "POST",
         body: formData,
       });
 
       const data = await response.json();
-      const baseUrl = "http://localhost:8000";
+      const baseUrl = "https://levy-items-holly-learned.trycloudflare.com";
 
       if (data.is_tif && Array.isArray(data.frames)) {
         const resultWithFullUrls = data.frames.map((frame: any) => ({
@@ -173,11 +173,9 @@ export default function Home() {
                 onClick={
                   !file ? () => fileInputRef.current?.click() : undefined
                 }
-                className={`w-full aspect-[4/3] bg-white ${
-                  file ? "border border-gray-300" : "border-2 border-dashed"
-                } rounded-md flex items-center justify-center overflow-hidden ${
-                  file ? "cursor-default" : "cursor-pointer hover:bg-gray-50"
-                } relative`}
+                className={`w-full aspect-[4/3] bg-white ${file ? "border border-gray-300" : "border-2 border-dashed"
+                  } rounded-md flex items-center justify-center overflow-hidden ${file ? "cursor-default" : "cursor-pointer hover:bg-gray-50"
+                  } relative`}
               >
                 {previewLoading ? (
                   <div className="flex flex-col items-center gap-1 text-sm text-gray-500">
@@ -251,12 +249,12 @@ export default function Home() {
                         {typeof resultFrames[selectedIndex]
                           .class_distribution === "object"
                           ? Object.entries(
-                              resultFrames[selectedIndex].class_distribution
-                            )
-                              .map(([k, v]) => `${k}: ${v}`)
-                              .join(", ")
+                            resultFrames[selectedIndex].class_distribution
+                          )
+                            .map(([k, v]) => `${k}: ${v}`)
+                            .join(", ")
                           : resultFrames[selectedIndex].class_distribution ||
-                            "None"}
+                          "None"}
                       </div>
                     </>
                   ) : (
@@ -278,11 +276,10 @@ export default function Home() {
                 <img
                   key={idx}
                   src={url}
-                  className={`w-24 h-24 object-cover border-2 rounded cursor-pointer ${
-                    idx === selectedIndex
-                      ? "border-blue-500"
-                      : "border-transparent"
-                  }`}
+                  className={`w-24 h-24 object-cover border-2 rounded cursor-pointer ${idx === selectedIndex
+                    ? "border-blue-500"
+                    : "border-transparent"
+                    }`}
                   onClick={() => setSelectedIndex(idx)}
                 />
               ))}
