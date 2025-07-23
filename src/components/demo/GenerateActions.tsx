@@ -15,7 +15,7 @@ export default function GenerateActions({
 }: GenerateActionsProps) {
   if (model === "model3") {
     return (
-      <div className="flex flex-col md:flex-row gap-2 w-full mt-4">
+      <div className="flex flex-col md:flex-row gap-2 w-full">
         <Button
           className="md:w-1/2 w-full h-[40px]"
           onClick={onGenerate}
@@ -33,7 +33,7 @@ export default function GenerateActions({
 
   return (
     <Button
-      className="w-full h-[40px] mt-4"
+      className="w-full h-[40px]"
       onClick={onGenerate}
       disabled={!file || !model || resultLoading}
     >

@@ -10,7 +10,7 @@ export default function FrameThumbnailList({
   setSelectedIndex,
 }: FrameThumbnailListProps) {
   return (
-    <div className="flex gap-2 overflow-x-auto pt-2">
+    <div className="flex gap-2 overflow-x-auto">
       {previewList.map((url, idx) => (
         <img
           key={idx}
