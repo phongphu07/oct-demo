@@ -1,17 +1,17 @@
 "use client";
 
-import { useRef, useState } from "react";
-import UploadBox from "./UploadBox";
-import ResultPanel from "./ResultPanel";
-import ModelSelector from "./ModelSelector";
-import FrameThumbnailList from "./FrameThumbnailList";
-import GenerateActions from "./GenerateActions";
-import { Label } from "../ui/label";
-import { Button } from "../ui/button";
+import { useEffect, useRef, useState } from "react";
 import {
   usePostPredict,
   useUploadImage,
 } from "../../services/hooks/hookPredict";
+import { Button } from "../ui/button";
+import { Label } from "../ui/label";
+import { mergeFramesHorizontally } from "../utils/mergeFramesHorizontally";
+import GenerateActions from "./GenerateActions";
+import ModelSelector from "./ModelSelector";
+import ResultPanel from "./ResultPanel";
+import UploadBox from "./UploadBox";
 
 export interface ResultFrame {
   frame_index: number;
@@ -31,10 +31,48 @@ export default function DemoCard() {
   const [previewLoading, setPreviewLoading] = useState(false);
   const [resultLoading, setResultLoading] = useState(false);
   const [resultFrames, setResultFrames] = useState<ResultFrame[]>([]);
+  const [mergedStrip, setMergedStrip] = useState<string | null>(null);
   const [task, setTask] = useState("predict");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { postPostPredict } = usePostPredict();
   const { postUploadImage } = useUploadImage();
+  const stripRef = useRef<HTMLDivElement>(null);
+  const [sliderX, setSliderX] = useState(0);
+  const [hoverX, setHoverX] = useState<number | null>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = stripRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const offsetX = e.clientX - rect.left;
+    setHoverX(offsetX);
+  };
+
+  const handleMouseLeave = () => {
+    setHoverX(null);
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = stripRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const offsetX = e.clientX - rect.left;
+    const ratio = offsetX / rect.width;
+    const index = Math.floor(ratio * previewList.length);
+
+    if (index >= 0 && index < previewList.length) {
+      setSelectedIndex(index);
+      setSliderX(offsetX);
+      setHoverX(null);
+    }
+  };
+  useEffect(() => {
+    if (previewList.length > 1) {
+      mergeFramesHorizontally(previewList).then(setMergedStrip);
+    } else {
+      setMergedStrip(null);
+    }
+  }, [previewList]);
 
   const handleFileChange = async (file: File) => {
     setPreviewLoading(true);
@@ -55,7 +93,10 @@ export default function DemoCard() {
         const data = res.data;
         const baseUrl = import.meta.env.VITE_API_BACKEND_DOMAIN;
         const urls = data.image_urls.map((url: string) => baseUrl + url);
+        const stripUrl = baseUrl + data.unrolled_url;
+
         setPreviewList(urls);
+        setMergedStrip(stripUrl);
       } catch (err) {
         console.error("Failed to upload TIFF:", err);
       } finally {
@@ -82,7 +123,6 @@ export default function DemoCard() {
     formData.append("model", model);
     formData.append("task", task);
     setResultLoading(true);
-    console.log(formData);
     try {
       const res = await postPostPredict(formData);
       const data = res.data;
@@ -140,13 +180,42 @@ export default function DemoCard() {
           </div>
         </div>
 
-        {previewList.length > 1 && (
-          <div className="overflow-x-auto">
-            <FrameThumbnailList
-              previewList={previewList}
-              selectedIndex={selectedIndex}
-              setSelectedIndex={setSelectedIndex}
-            />
+        {mergedStrip && (
+          <div className="relative bg-black rounded border text-white">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 text-xs font-bold text-orange-300">
+              P
+            </div>
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 text-xs font-bold text-orange-300">
+              D
+            </div>
+
+            <div
+              className="relative overflow-hidden"
+              ref={stripRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              onClick={handleClick}
+            >
+              <img
+                src={mergedStrip}
+                alt="OCT Strip"
+                className="w-full object-contain"
+              />
+
+              <div
+                className="absolute top-0 bottom-0 w-[2px] bg-white"
+                style={{ left: `${sliderX}px` }}
+              >
+                <div className="w-3 h-3 bg-white rotate-45 absolute -top-2 left-1/2 -translate-x-1/2"></div>
+              </div>
+
+              {hoverX !== null && (
+                <div
+                  className="absolute top-0 bottom-0 w-[2px] bg-white opacity-30"
+                  style={{ left: `${hoverX}px` }}
+                />
+              )}
+            </div>
           </div>
         )}
 
