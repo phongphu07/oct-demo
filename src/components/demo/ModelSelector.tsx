@@ -16,13 +16,21 @@ function ModelCard({
   return (
     <div
       onClick={() => onSelect(id)}
-      className={`rounded-lg border p-4 cursor-pointer transition-all hover:shadow-sm 
+      className={`rounded-lg border-2 p-4 cursor-pointer transition-all hover:shadow-sm
         ${
-          selected ? "border-blue-600 bg-blue-50" : "border-gray-200 bg-white"
+          selected
+            ? "border-black bg-white text-black"
+            : "border-gray-200 bg-white text-gray-500"
         }`}
     >
-      <h3 className="font-semibold text-base mb-1">{title}</h3>
-      <p className="text-sm text-gray-600">{description}</p>
+      <h3
+        className={`font-semibold text-base mb-1 ${
+          selected ? "text-black" : "text-gray-800"
+        }`}
+      >
+        {title}
+      </h3>
+      <p className="text-sm">{description}</p>
     </div>
   );
 }

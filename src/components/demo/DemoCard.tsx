@@ -7,13 +7,11 @@ import ModelSelector from "./ModelSelector";
 import FrameThumbnailList from "./FrameThumbnailList";
 import GenerateActions from "./GenerateActions";
 import { Label } from "../ui/label";
+import { Button } from "../ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+  usePostPredict,
+  useUploadImage,
+} from "../../services/hooks/hookPredict";
 
 export interface ResultFrame {
   frame_index: number;
@@ -35,6 +33,8 @@ export default function DemoCard() {
   const [resultFrames, setResultFrames] = useState<ResultFrame[]>([]);
   const [task, setTask] = useState("predict");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { postPostPredict } = usePostPredict();
+  const { postUploadImage } = useUploadImage();
 
   const handleFileChange = async (file: File) => {
     setPreviewLoading(true);
@@ -51,15 +51,9 @@ export default function DemoCard() {
       const formData = new FormData();
       formData.append("file", file);
       try {
-        const res = await fetch(
-          "https://levy-items-holly-learned.trycloudflare.com/uploadImage",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-        const data = await res.json();
-        const baseUrl = "https://levy-items-holly-learned.trycloudflare.com";
+        const res = await postUploadImage(formData);
+        const data = res.data;
+        const baseUrl = import.meta.env.VITE_API_BACKEND_DOMAIN;
         const urls = data.image_urls.map((url: string) => baseUrl + url);
         setPreviewList(urls);
       } catch (err) {
@@ -88,17 +82,11 @@ export default function DemoCard() {
     formData.append("model", model);
     formData.append("task", task);
     setResultLoading(true);
-
+    console.log(formData);
     try {
-      const res = await fetch(
-        "https://levy-items-holly-learned.trycloudflare.com/predict",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      const data = await res.json();
-      const baseUrl = "https://levy-items-holly-learned.trycloudflare.com";
+      const res = await postPostPredict(formData);
+      const data = res.data;
+      const baseUrl = import.meta.env.VITE_API_BACKEND_DOMAIN;
 
       if (data.is_tif && Array.isArray(data.frames)) {
         setResultFrames(
@@ -130,49 +118,7 @@ export default function DemoCard() {
 
   return (
     <div className="flex w-full h-full gap-6">
-      <div className="w-[350px] min-w-[200px] max-w-[300px] p-4 md:p-6 bg-white shadow-lg border-r rounded-2xl space-y-4">
-        <Label className="text-xl font-bold block text-center">
-          Select Model
-        </Label>
-
-        <ModelSelector
-          model={model}
-          setModel={(id) => {
-            setModel(id);
-            setResultFrames([]);
-            if (id !== "model1") setTask("predict");
-          }}
-        />
-      </div>
-
       <div className="flex-1 shadow-lg border rounded-2xl bg-white p-4 md:p-6 space-y-6">
-        {model === "model1" && (
-          <div className="flex gap-2 w-full">
-            <Label htmlFor="task-select" className="text-sm font-medium">
-              Task
-            </Label>
-            <Select
-              value={task}
-              onValueChange={(value) => {
-                setTask(value);
-                setResultFrames([]);
-              }}
-            >
-              <SelectTrigger className="w-full" id="task-select">
-                <SelectValue placeholder="Select a task" defaultValue={task} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="predict">
-                  Predict Stent and GuideWire
-                </SelectItem>
-                <SelectItem value="segment">
-                  Segmentation Lumen and SideBrand
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        )}
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <div className="max-h-[70vh] overflow-auto">
             <UploadBox
@@ -210,6 +156,44 @@ export default function DemoCard() {
           file={file}
           onGenerate={handleGenerate}
         />
+      </div>
+      <div className="w-full min-w-[200px] max-w-[500px] p-4 md:p-6 bg-white shadow-lg border-r rounded-2xl space-y-4">
+        <Label className="text-xl font-bold block">Select Model</Label>
+
+        <ModelSelector
+          model={model}
+          setModel={(id) => {
+            setModel(id);
+            setResultFrames([]);
+            if (id !== "model1") setTask("predict");
+          }}
+        />
+
+        {model === "model1" && (
+          <div className="space-y-2">
+            <Label className="text-xl font-bold block">Select Task</Label>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant={task === "predict" ? "default" : "outline"}
+                onClick={() => {
+                  setTask("predict");
+                  setResultFrames([]);
+                }}
+              >
+                Predict Stent & GuideWire
+              </Button>
+              <Button
+                variant={task === "segment" ? "default" : "outline"}
+                onClick={() => {
+                  setTask("segment");
+                  setResultFrames([]);
+                }}
+              >
+                Segment Lumen & SideBranch
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
