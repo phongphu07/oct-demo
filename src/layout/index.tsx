@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-import Home from "../pages/home";
 
 const Layout = () => {
   // const location = useLocation();
@@ -10,7 +9,6 @@ const Layout = () => {
         <main
           className={`main-content max-h-full overflow-y-auto grow overflow-x-hidden`}
         >
-          <Home />
           <Outlet />
         </main>
       </div>

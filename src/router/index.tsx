@@ -4,12 +4,30 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Layout from "../layout";
+import DemoPage from "../pages/demo";
+import DocsPage from "../pages/docs";
+import AboutPage from "../pages/about";
+import HomePage from "../pages/home";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    children: [],
+    children: [
+      { path: "/", element: <HomePage /> },
+      {
+        path: "/demo",
+        element: <DemoPage />,
+      },
+      {
+        path: "/docs",
+        element: <DocsPage />,
+      },
+      {
+        path: "/about",
+        element: <AboutPage />,
+      },
+    ],
   },
 
   {
