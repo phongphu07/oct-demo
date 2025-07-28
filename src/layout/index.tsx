@@ -1,4 +1,6 @@
 import { Outlet } from "react-router-dom";
+import Header from "../components/ui/header";
+import Footer from "../components/ui/footer";
 
 const Layout = () => {
   // const location = useLocation();
@@ -9,7 +11,9 @@ const Layout = () => {
         <main
           className={`main-content max-h-full overflow-y-auto grow overflow-x-hidden`}
         >
+          <Header />
           <Outlet />
+          <Footer />
         </main>
       </div>
     </div>
