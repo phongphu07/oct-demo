@@ -27,7 +27,7 @@ export default function ResultPanel({
           <img
             src={resultUrl}
             alt="Result"
-            className="object-contain max-h-full max-w-full"
+            className="h-full w-auto object-contain"
           />
         ) : (
           <span className="text-gray-400 text-sm">No results</span>
@@ -46,8 +46,8 @@ export default function ResultPanel({
                 <strong>Detected classes:</strong>{" "}
                 {typeof resultFrame.class_distribution === "object"
                   ? Object.entries(resultFrame.class_distribution)
-                      .map(([k, v]) => `${k}: ${v}`)
-                      .join(", ")
+                    .map(([k, v]) => `${k}: ${v}`)
+                    .join(", ")
                   : resultFrame.class_distribution || "None"}
               </div>
             </>

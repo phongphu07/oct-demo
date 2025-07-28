@@ -48,7 +48,7 @@ export default function AboutPage() {
         {/* Section 4: Members */}
         <section className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {members.map((member, index) => (
-            <Card key={index} className="flex flex-col items-center py-6">
+            <Card key={index} className="flex flex-col items-center py-6 hover:shadow-lg transition-transform hover:-translate-y-1">
               <img
                 src={member.image}
                 alt={member.name}

@@ -36,11 +36,9 @@ export default function UploadBox({
         onDrop={!file ? handleDrop : undefined}
         onDragOver={!file ? (e) => e.preventDefault() : undefined}
         onClick={!file ? () => fileInputRef.current?.click() : undefined}
-        className={`w-full aspect-[4/3] bg-white ${
-          file ? "border border-gray-300" : "border-2 border-dashed"
-        } rounded-md flex items-center justify-center overflow-hidden ${
-          file ? "cursor-default" : "cursor-pointer hover:bg-gray-50"
-        } relative`}
+        className={`w-full aspect-[4/3] bg-white ${file ? "border border-gray-300" : "border-2 border-dashed"
+          } rounded-md flex items-center justify-center overflow-hidden ${file ? "cursor-default" : "cursor-pointer hover:bg-gray-50"
+          } relative`}
       >
         {previewLoading ? (
           <div className="flex flex-col items-center gap-1 text-sm text-gray-500">
@@ -51,7 +49,7 @@ export default function UploadBox({
           <img
             src={previewUrl}
             alt="Preview"
-            className="object-contain max-h-full max-w-full"
+            className="w-full h-full object-contain"
           />
         ) : (
           <span className="text-gray-400 text-sm text-center px-4">

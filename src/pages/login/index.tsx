@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toastError, toastSuccess } from "../../components/Toast";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
-import { toastSuccess, toastError } from "../../components/Toast";
 
 export default function LoginPage() {
   const navigate = useNavigate();

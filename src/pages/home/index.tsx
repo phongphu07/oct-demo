@@ -218,7 +218,7 @@ export default function HomePage() {
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
                 {items.map((item, idx) => (
-                  <Card className="h-full w-full" key={idx}>
+                  <Card className="h-full w-full hover:shadow-lg transition-transform hover:-translate-y-1" key={idx}>
                     <CardContent className="p-6 w-full">
                       <div
                         className={`bg-${item.color}/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4`}
@@ -286,7 +286,7 @@ export default function HomePage() {
               Core Technologies
             </h3>
             <div className="grid md:grid-cols-2 gap-8">
-              <Card className="p-6">
+              <Card className="p-6 hover:shadow-lg transition-transform hover:-translate-y-1">
                 <div className="flex items-center mb-4">
                   <div className="bg-[#4F87FF]/10 p-3 rounded-lg mr-4">
                     <Search className="text-[#4F87FF] text-xl" />
@@ -303,7 +303,7 @@ export default function HomePage() {
                 </p>
               </Card>
 
-              <Card className="p-6">
+              <Card className="p-6 hover:shadow-lg transition-transform hover:-translate-y-1">
                 <div className="flex items-center mb-4">
                   <div className="bg-success-green/10 p-3 rounded-lg mr-4">
                     <Layers className="text-success-green text-xl" />

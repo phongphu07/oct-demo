@@ -12,6 +12,7 @@ import GenerateActions from "./GenerateActions";
 import ModelSelector from "./ModelSelector";
 import ResultPanel from "./ResultPanel";
 import UploadBox from "./UploadBox";
+import { toastSuccess, toastError } from "../Toast";
 
 export interface ResultFrame {
   frame_index: number;
@@ -97,8 +98,10 @@ export default function DemoCard() {
 
         setPreviewList(urls);
         setMergedStrip(stripUrl);
+        toastSuccess("Uploaded and processed image successfully!");
       } catch (err) {
         console.error("Failed to upload TIFF:", err);
+        toastError("Failed to upload image.");
       } finally {
         setPreviewLoading(false);
       }
@@ -145,9 +148,12 @@ export default function DemoCard() {
           },
         ]);
       }
+      toastSuccess("Prediction complete!");
     } catch (err) {
       console.error("Error:", err);
-    } finally {
+      toastError("Prediction failed.");
+    }
+    finally {
       setResultLoading(false);
     }
   };
@@ -158,7 +164,6 @@ export default function DemoCard() {
 
   return (
     <div className="flex w-full gap-6 items-start">
-      {/* LEFT PANEL: Upload + Result + Strip + Generate */}
       <div className="flex-1 min-w-0 shadow-lg border rounded-2xl bg-white p-4 md:p-6 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <div className="max-h-[70vh] overflow-auto">
