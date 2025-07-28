@@ -7,7 +7,7 @@ const timeOut = 600_000;
 
 export const restTransport = () => {
   const client = axios.create({
-    baseURL: "https://levy-items-holly-learned.trycloudflare.com",
+    baseURL: "http://127.0.0.1:9000",
     timeout: timeOut,
   });
 

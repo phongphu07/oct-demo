@@ -157,8 +157,9 @@ export default function DemoCard() {
     resultFrames.find((f) => f.frame_index === selectedIndex)?.url || null;
 
   return (
-    <div className="flex w-full h-full gap-6">
-      <div className="flex-1 shadow-lg border rounded-2xl bg-white p-4 md:p-6 space-y-6">
+    <div className="flex w-full gap-6 items-start">
+      {/* LEFT PANEL: Upload + Result + Strip + Generate */}
+      <div className="flex-1 min-w-0 shadow-lg border rounded-2xl bg-white p-4 md:p-6 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <div className="max-h-[70vh] overflow-auto">
             <UploadBox
@@ -226,7 +227,9 @@ export default function DemoCard() {
           onGenerate={handleGenerate}
         />
       </div>
-      <div className="w-full min-w-[200px] max-w-[500px] p-4 md:p-6 bg-white shadow-lg border-r rounded-2xl space-y-4">
+
+      {/* RIGHT PANEL: Model Selector */}
+      <div className="w-[400px] flex-shrink-0 p-4 md:p-6 bg-white shadow-lg border rounded-2xl space-y-4">
         <Label className="text-xl font-bold block">Select Model</Label>
 
         <ModelSelector

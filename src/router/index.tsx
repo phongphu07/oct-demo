@@ -8,6 +8,9 @@ import DemoPage from "../pages/demo";
 // import DocsPage from "../pages/docs";
 import AboutPage from "../pages/about";
 import HomePage from "../pages/home";
+import ContactUs from "../pages/contact";
+import LoginPage from "../pages/login";
+import GuidePage from "../pages/guide";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +29,18 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <AboutPage />,
+      },
+      {
+        path: "/contact-us",
+        element: <ContactUs />,
+      },
+      {
+        path: "/guide",
+        element: <GuidePage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
       },
     ],
   },

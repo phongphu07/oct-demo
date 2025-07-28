@@ -1,21 +1,17 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/ui/header";
 import Footer from "../components/ui/footer";
+import { ToastContainer } from "react-toastify";
 
 const Layout = () => {
-  // const location = useLocation();
-  // const isDashboard = location.pathname === "/";
   return (
-    <div className="h-screen overflow-hidden">
-      <div className="flex relative h-full">
-        <main
-          className={`main-content max-h-full overflow-y-auto grow overflow-x-hidden`}
-        >
-          <Header />
-          <Outlet />
-          <Footer />
-        </main>
-      </div>
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <main className="flex-1 flex justify-center items-center">
+        <Outlet />
+      </main>
+      <Footer />
+      <ToastContainer />
     </div>
   );
 };
