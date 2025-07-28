@@ -5,7 +5,6 @@ import {
 } from "react-router-dom";
 import Layout from "../layout";
 import DemoPage from "../pages/demo";
-// import DocsPage from "../pages/docs";
 import AboutPage from "../pages/about";
 import HomePage from "../pages/home";
 import ContactUs from "../pages/contact";
@@ -18,10 +17,6 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { path: "/", element: <HomePage /> },
-      {
-        path: "/demo",
-        element: <DemoPage />,
-      },
       {
         path: "/demo",
         element: <DemoPage />,

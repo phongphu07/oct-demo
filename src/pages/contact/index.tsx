@@ -7,7 +7,7 @@ export default function ContactUs() {
   return (
     <div
       className="w-full min-h-screen bg-cover bg-center flex items-center justify-center px-4 py-12"
-      style={{ backgroundImage: `url('src/assets/contact.jpg')` }}
+      style={{ backgroundImage: `url('/contact.jpg')` }}
     >
       <div className="w-full max-w-xl bg-white/80 rounded-3xl shadow-2xl p-10 backdrop-blur-lg">
         <h1 className="text-3xl font-bold text-center mb-4">Contact Us</h1>
