@@ -23,10 +23,10 @@ export default function Header() {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <a
-                href="/docs"
+                href="/demo"
                 className="flex items-center text-sm font-medium hover:text-primary transition-colors"
               >
-                <BookOpen className="mr-1 h-4 w-4" /> Docs
+                <BookOpen className="mr-1 h-4 w-4" /> Demo
               </a>
             </NavigationMenuItem>
             <NavigationMenuItem>
