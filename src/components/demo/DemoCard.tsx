@@ -92,7 +92,7 @@ export default function DemoCard() {
       try {
         const res = await postUploadImage(formData);
         const data = res.data;
-        const baseUrl = import.meta.env.VITE_API_BACKEND_DOMAIN;
+        const baseUrl = "http://127.0.0.1:9007";
         const urls = data.image_urls.map((url: string) => baseUrl + url);
         const stripUrl = baseUrl + data.unrolled_url;
 
@@ -129,7 +129,7 @@ export default function DemoCard() {
     try {
       const res = await postPostPredict(formData);
       const data = res.data;
-      const baseUrl = import.meta.env.VITE_API_BACKEND_DOMAIN;
+      const baseUrl = "http://127.0.0.1:9007";
 
       if (data.is_tif && Array.isArray(data.frames)) {
         setResultFrames(
