@@ -1,18 +1,11 @@
-import {
-  BookOpen,
-  HelpCircle,
-  Home,
-  Info,
-  LogIn,
-  PhoneIncoming,
-} from "lucide-react";
+import { BookOpen, HelpCircle, Info, LogIn } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
 } from "./navigation-menu";
-import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -31,27 +24,22 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full border-b z-50 backdrop-blur transition-all ${scrolled
-        ? "bg-background/50 opacity-90 shadow-md"
-        : "bg-background/70 opacity-100"
-        }`}
+      className={`fixed top-0 left-0 w-full border-b z-50 backdrop-blur transition-all ${
+        scrolled
+          ? "bg-background/50 opacity-90 shadow-md"
+          : "bg-background/70 opacity-100"
+      }`}
     >
       <div className="max-w-screen-2xl mx-auto h-16 flex items-center justify-between">
-        <a href="/" className="text-xl font-bold text-primary">OCT Image AI</a>
+        <a href="/" className="text-xl font-bold text-primary">
+          OCT Image AI
+        </a>
         {!isLoginPage && (
           <NavigationMenu>
             <NavigationMenuList className="space-x-6">
               <NavigationMenuItem>
                 <a
                   href="/"
-                  className="flex items-center text-sm font-medium hover:text-primary transition-colors"
-                >
-                  <Home className="mr-1 h-4 w-4" /> Home
-                </a>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <a
-                  href="/demo"
                   className="flex items-center text-sm font-medium hover:text-primary transition-colors"
                 >
                   <BookOpen className="mr-1 h-4 w-4" /> Demo
@@ -71,14 +59,6 @@ export default function Header() {
                   className="flex items-center text-sm font-medium hover:text-primary transition-colors"
                 >
                   <Info className="mr-1 h-4 w-4" /> About Us
-                </a>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <a
-                  href="/contact-us"
-                  className="flex items-center text-sm font-medium hover:text-primary transition-colors"
-                >
-                  <PhoneIncoming className="mr-1 h-4 w-4" /> Contact Us
                 </a>
               </NavigationMenuItem>
               <NavigationMenuItem>

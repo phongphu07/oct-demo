@@ -152,8 +152,7 @@ export default function DemoCard() {
     } catch (err) {
       console.error("Error:", err);
       toastError("Prediction failed.");
-    }
-    finally {
+    } finally {
       setResultLoading(false);
     }
   };
@@ -267,6 +266,47 @@ export default function DemoCard() {
                 }}
               >
                 Segment Lumen & SideBranch
+              </Button>
+            </div>
+          </div>
+        )}
+        {model === "model2" && (
+          <div className="space-y-2">
+            <Label className="text-xl font-bold block">Select Task</Label>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant={task === "predict" ? "default" : "outline"}
+                onClick={() => {
+                  setTask("predict");
+                  setResultFrames([]);
+                }}
+              >
+                Segment Calcium
+              </Button>
+              <Button
+                variant={task === "segment" ? "default" : "outline"}
+                onClick={() => {
+                  setTask("segment");
+                  setResultFrames([]);
+                }}
+              >
+                Detect EEL
+              </Button>
+            </div>
+          </div>
+        )}
+        {model === "model3" && (
+          <div className="space-y-2">
+            <Label className="text-xl font-bold block">Select Task</Label>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant={task === "predict" ? "default" : "outline"}
+                onClick={() => {
+                  setTask("predict");
+                  setResultFrames([]);
+                }}
+              >
+                FFR Prediction
               </Button>
             </div>
           </div>
