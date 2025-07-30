@@ -5,14 +5,18 @@ import {
   usePostPredict,
   useUploadImage,
 } from "../../services/hooks/hookPredict";
-import { Button } from "../ui/button";
+import { toastError, toastSuccess } from "../Toast";
 import { Label } from "../ui/label";
 import { mergeFramesHorizontally } from "../utils/mergeFramesHorizontally";
+import FeedbackDialog from "./FeedbackDialog";
 import GenerateActions from "./GenerateActions";
 import ModelSelector from "./ModelSelector";
 import ResultPanel from "./ResultPanel";
+import SampleImagesSelector from "./SampleImagesSelector ";
+import TaskSelector from "./TaskSelector";
 import UploadBox from "./UploadBox";
-import { toastSuccess, toastError } from "../Toast";
+import { getSampleImages } from "../data";
+import MergedStripPreview from "./StripPreview";
 
 export interface ResultFrame {
   frame_index: number;
@@ -37,36 +41,11 @@ export default function DemoCard() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { postPostPredict } = usePostPredict();
   const { postUploadImage } = useUploadImage();
-  const stripRef = useRef<HTMLDivElement>(null);
-  const [sliderX, setSliderX] = useState(0);
-  const [hoverX, setHoverX] = useState<number | null>(null);
+  const [activeSampleIndex, setActiveSampleIndex] = useState<number | null>(
+    null
+  );
+  const sampleImages = getSampleImages(model);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = stripRef.current?.getBoundingClientRect();
-    if (!rect) return;
-
-    const offsetX = e.clientX - rect.left;
-    setHoverX(offsetX);
-  };
-
-  const handleMouseLeave = () => {
-    setHoverX(null);
-  };
-
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = stripRef.current?.getBoundingClientRect();
-    if (!rect) return;
-
-    const offsetX = e.clientX - rect.left;
-    const ratio = offsetX / rect.width;
-    const index = Math.floor(ratio * previewList.length);
-
-    if (index >= 0 && index < previewList.length) {
-      setSelectedIndex(index);
-      setSliderX(offsetX);
-      setHoverX(null);
-    }
-  };
   useEffect(() => {
     if (previewList.length > 1) {
       mergeFramesHorizontally(previewList).then(setMergedStrip);
@@ -161,14 +140,6 @@ export default function DemoCard() {
   const activeResult =
     resultFrames.find((f) => f.frame_index === selectedIndex)?.url || null;
 
-  const sampleImages = [
-    "/sample_images/1.png",
-    "/sample_images/2.png",
-    "/sample_images/3.png",
-    "/sample_images/4.png",
-    "/sample_images/5.png",
-  ];
-
   return (
     <>
       <div className="w-full mt-8 mb-8 text-center space-y-2 max-w-full mx-auto">
@@ -190,6 +161,7 @@ export default function DemoCard() {
                 previewLoading={previewLoading}
                 onFileChange={handleFileChange}
                 onClear={handleClear}
+                model={model}
               />
             </div>
             <div className="max-h-[70vh] overflow-auto">
@@ -203,69 +175,21 @@ export default function DemoCard() {
           </div>
 
           {mergedStrip && (
-            <div className="relative bg-black rounded border text-white">
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 text-xs font-bold text-orange-300">
-                P
-              </div>
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 text-xs font-bold text-orange-300">
-                D
-              </div>
-
-              <div
-                className="relative overflow-hidden"
-                ref={stripRef}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
-                onClick={handleClick}
-              >
-                <img
-                  src={mergedStrip}
-                  alt="OCT Strip"
-                  className="w-full object-contain"
-                />
-
-                <div
-                  className="absolute top-0 bottom-0 w-[2px] bg-white"
-                  style={{ left: `${sliderX}px` }}
-                >
-                  <div className="w-3 h-3 bg-white rotate-45 absolute -top-2 left-1/2 -translate-x-1/2"></div>
-                </div>
-
-                {hoverX !== null && (
-                  <div
-                    className="absolute top-0 bottom-0 w-[2px] bg-white opacity-30"
-                    style={{ left: `${hoverX}px` }}
-                  />
-                )}
-              </div>
-            </div>
+            <MergedStripPreview
+              mergedStrip={mergedStrip}
+              setSelectedIndex={setSelectedIndex}
+              previewListLength={previewList.length}
+            />
           )}
-          <div className="space-y-2 mb-4">
-            <Label className="text-md font-semibold">Example Images</Label>
-            <div className="flex gap-2 overflow-x-auto pb-2">
-              {sampleImages.map((src, index) => (
-                <img
-                  key={index}
-                  src={src}
-                  alt={`sample-${index}`}
-                  className="w-24 h-24 object-cover rounded cursor-pointer border hover:border-blue-500"
-                  onClick={async () => {
-                    try {
-                      const response = await fetch(src);
-                      const blob = await response.blob();
-                      const file = new File([blob], `sample-${index}.jpg`, {
-                        type: blob.type,
-                      });
-                      handleFileChange(file);
-                      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    } catch (err) {
-                      toastError("Failed to load sample image");
-                    }
-                  }}
-                />
-              ))}
-            </div>
-          </div>
+
+          <SampleImagesSelector
+            sampleImages={sampleImages}
+            activeIndex={activeSampleIndex}
+            onSelect={async (index, file) => {
+              await handleFileChange(file);
+              setActiveSampleIndex(index);
+            }}
+          />
           <GenerateActions
             model={model}
             resultLoading={resultLoading}
@@ -274,7 +198,6 @@ export default function DemoCard() {
           />
         </div>
 
-        {/* RIGHT PANEL: Model Selector */}
         <div className="w-[400px] flex-shrink-0 p-4 md:p-6 bg-white shadow-lg border rounded-2xl space-y-4">
           <Label className="text-xl font-bold block">Select Model</Label>
 
@@ -283,87 +206,20 @@ export default function DemoCard() {
             setModel={(id) => {
               setModel(id);
               setResultFrames([]);
+              setActiveSampleIndex(null);
               if (id !== "model1") setTask("predict");
             }}
           />
-
-          {model === "model1" && (
-            <div className="space-y-2">
-              <Label className="text-xl font-bold block">Select Task</Label>
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  variant={task === "predict" ? "default" : "outline"}
-                  onClick={() => {
-                    setTask("predict");
-                    setResultFrames([]);
-                  }}
-                >
-                  Predict Stent & GuideWire
-                </Button>
-                <Button
-                  variant={task === "segment" ? "default" : "outline"}
-                  onClick={() => {
-                    setTask("segment");
-                    setResultFrames([]);
-                  }}
-                >
-                  Segment Lumen & SideBranch
-                </Button>
-              </div>
-            </div>
-          )}
-          {model === "model2" && (
-            <div className="space-y-2">
-              <Label className="text-xl font-bold block">Select Task</Label>
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  variant={task === "predict" ? "default" : "outline"}
-                  onClick={() => {
-                    setTask("predict");
-                    setResultFrames([]);
-                  }}
-                >
-                  Segment Calcium
-                </Button>
-                <Button
-                  variant={task === "segment" ? "default" : "outline"}
-                  onClick={() => {
-                    setTask("segment");
-                    setResultFrames([]);
-                  }}
-                >
-                  Detect EEL
-                </Button>
-              </div>
-            </div>
-          )}
-          {model === "model3" && (
-            <div className="space-y-2">
-              <Label className="text-xl font-bold block">Select Task</Label>
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  variant={task === "predict" ? "default" : "outline"}
-                  onClick={() => {
-                    setTask("predict");
-                    setResultFrames([]);
-                  }}
-                >
-                  Segment Calcium
-                </Button>
-                <Button
-                  variant={task === "predict" ? "default" : "outline"}
-                  onClick={() => {
-                    setTask("predict");
-                    setResultFrames([]);
-                  }}
-                >
-                  FFR Prediction
-                </Button>
-              </div>
-            </div>
-          )}
+          <TaskSelector
+            model={model}
+            task={task}
+            setTask={setTask}
+            clearResults={() => setResultFrames([])}
+          />
         </div>
       </div>
+
+      <FeedbackDialog />
     </>
   );
 }

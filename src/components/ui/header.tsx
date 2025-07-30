@@ -32,7 +32,7 @@ export default function Header() {
     >
       <div className="max-w-screen-2xl mx-auto h-16 flex items-center justify-between">
         <a href="/" className="text-xl font-bold text-primary">
-          OCT Image AI
+          OCT & Angio Image AI Platform
         </a>
         {!isLoginPage && (
           <NavigationMenu>
