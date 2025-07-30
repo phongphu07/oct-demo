@@ -1,4 +1,4 @@
-import { BookOpen, HelpCircle, Info, LogIn } from "lucide-react";
+import { BookOpen, HelpCircle, LogIn } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -53,14 +53,14 @@ export default function Header() {
                   <HelpCircle className="mr-1 h-4 w-4" /> Guide
                 </a>
               </NavigationMenuItem>
-              <NavigationMenuItem>
+              {/* <NavigationMenuItem>
                 <a
                   href="/about"
                   className="flex items-center text-sm font-medium hover:text-primary transition-colors"
                 >
                   <Info className="mr-1 h-4 w-4" /> About Us
                 </a>
-              </NavigationMenuItem>
+              </NavigationMenuItem> */}
               <NavigationMenuItem>
                 <button
                   onClick={() => navigate("/login")}
