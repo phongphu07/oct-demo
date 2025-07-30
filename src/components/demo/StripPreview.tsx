@@ -50,7 +50,7 @@ export default function MergedStripPreview({
         <img
           src={mergedStrip}
           alt="OCT Strip"
-          className="w-full object-contain"
+          className="w-full h-20"
         />
         <div
           className="absolute top-0 bottom-0 w-[2px] bg-white z-10"

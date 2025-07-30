@@ -10,17 +10,18 @@ export default function FrameThumbnailList({
   setSelectedIndex,
 }: FrameThumbnailListProps) {
   return (
-    <div className="flex gap-2 overflow-x-auto">
-      {previewList.map((url, idx) => (
-        <img
-          key={idx}
-          src={url}
-          className={`w-24 h-24 object-cover border-2 rounded cursor-pointer ${
-            idx === selectedIndex ? "border-blue-500" : "border-transparent"
-          }`}
-          onClick={() => setSelectedIndex(idx)}
-        />
-      ))}
+    <div className="w-full overflow-x-auto">
+      <div className="flex gap-2 h-28 w-max px-2">
+        {previewList.map((url, idx) => (
+          <img
+            key={idx}
+            src={url}
+            className={`w-24 h-24 object-cover border-2 rounded cursor-pointer flex-shrink-0 ${idx === selectedIndex ? "border-blue-500" : "border-transparent"
+              }`}
+            onClick={() => setSelectedIndex(idx)}
+          />
+        ))}
+      </div>
     </div>
   );
 }

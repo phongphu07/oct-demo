@@ -52,11 +52,13 @@ export default function DemoCard() {
     setResultFrames([]);
     setSelectedIndex(0);
 
-    const isTiff =
-      file.name.toLowerCase().endsWith(".tif") ||
-      file.name.toLowerCase().endsWith(".tiff");
+    const ext = file.name.toLowerCase();
+    const isMultiFrame =
+      ext.endsWith(".tif") ||
+      ext.endsWith(".tiff") ||
+      ext.endsWith(".dcm");
 
-    if (isTiff) {
+    if (isMultiFrame) {
       const formData = new FormData();
       formData.append("file", file);
       try {
@@ -70,7 +72,7 @@ export default function DemoCard() {
         setMergedStrip(stripUrl);
         toastSuccess("Uploaded and processed image successfully!");
       } catch (err) {
-        console.error("Failed to upload TIFF:", err);
+        console.error("Failed to upload image:", err);
         toastError("Failed to upload image.");
       } finally {
         setPreviewLoading(false);
@@ -86,6 +88,7 @@ export default function DemoCard() {
     setPreviewList([]);
     setResultFrames([]);
     setSelectedIndex(0);
+    setMergedStrip("");
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -153,7 +156,19 @@ export default function DemoCard() {
                 onFileChange={handleFileChange}
                 onClear={handleClear}
                 model={model}
+                extraContent={
+                  <SampleImagesSelector
+                    sampleImages={sampleImages}
+                    activeIndex={activeSampleIndex}
+                    onSelect={async (index, file) => {
+                      await handleFileChange(file);
+                      setActiveSampleIndex(index);
+                      setMergedStrip("");
+                    }}
+                  />
+                }
               />
+
             </div>
             <div className="max-h-[70vh] overflow-auto">
               <ResultPanel
@@ -172,15 +187,6 @@ export default function DemoCard() {
               previewListLength={previewList.length}
             />
           )}
-
-          <SampleImagesSelector
-            sampleImages={sampleImages}
-            activeIndex={activeSampleIndex}
-            onSelect={async (index, file) => {
-              await handleFileChange(file);
-              setActiveSampleIndex(index);
-            }}
-          />
           <GenerateActions
             model={model}
             resultLoading={resultLoading}
