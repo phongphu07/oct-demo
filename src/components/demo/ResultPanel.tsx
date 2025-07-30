@@ -46,15 +46,18 @@ export default function ResultPanel({
                 <strong>Detected classes:</strong>{" "}
                 {typeof resultFrame.class_distribution === "object"
                   ? Object.entries(resultFrame.class_distribution)
-                    .map(([k, v]) => `${k}: ${v}`)
-                    .join(", ")
+                      .map(([k, v]) => `${k}: ${v}`)
+                      .join(", ")
                   : resultFrame.class_distribution || "None"}
               </div>
             </>
           ) : (
             resultFrame.summary && (
               <div>
-                <strong>Summary:</strong> {resultFrame.summary}
+                <strong>Summary:</strong>
+                <pre className="whitespace-pre-wrap text-sm text-gray-600 mt-1">
+                  {resultFrame.summary}
+                </pre>
               </div>
             )
           )}
