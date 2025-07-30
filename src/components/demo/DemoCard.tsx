@@ -1,22 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   usePostPredict,
   useUploadImage,
 } from "../../services/hooks/hookPredict";
+import { getSampleImages } from "../data";
 import { toastError, toastSuccess } from "../Toast";
 import { Label } from "../ui/label";
-import { mergeFramesHorizontally } from "../utils/mergeFramesHorizontally";
 import FeedbackDialog from "./FeedbackDialog";
 import GenerateActions from "./GenerateActions";
 import ModelSelector from "./ModelSelector";
 import ResultPanel from "./ResultPanel";
 import SampleImagesSelector from "./SampleImagesSelector ";
+import MergedStripPreview from "./StripPreview";
 import TaskSelector from "./TaskSelector";
 import UploadBox from "./UploadBox";
-import { getSampleImages } from "../data";
-import MergedStripPreview from "./StripPreview";
 
 export interface ResultFrame {
   frame_index: number;
@@ -45,14 +44,6 @@ export default function DemoCard() {
     null
   );
   const sampleImages = getSampleImages(model);
-
-  useEffect(() => {
-    if (previewList.length > 1) {
-      mergeFramesHorizontally(previewList).then(setMergedStrip);
-    } else {
-      setMergedStrip(null);
-    }
-  }, [previewList]);
 
   const handleFileChange = async (file: File) => {
     setPreviewLoading(true);

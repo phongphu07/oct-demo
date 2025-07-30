@@ -77,7 +77,10 @@ export default function FeedbackDialog() {
             >
               Cancel
             </Button>
-            <Button onClick={handleSendFeedback} disabled={isSending}>
+            <Button
+              onClick={handleSendFeedback}
+              disabled={!feedbackText.trim() || isSending}
+            >
               {isSending ? "Sending..." : "Submit"}
             </Button>
           </DialogFooter>

@@ -12,9 +12,9 @@ export default function SampleImagesSelector({
   onSelect: (index: number, file: File) => void;
 }) {
   return (
-    <div className="space-y-2 mb-4">
+    <div className="space-y-2">
       <Label className="text-md font-semibold">Example Images</Label>
-      <div className="flex gap-2 overflow-x-auto pb-2">
+      <div className="flex gap-2 overflow-x-auto">
         {sampleImages.map((src, index) => (
           <div
             key={index}
