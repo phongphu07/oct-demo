@@ -56,7 +56,7 @@ export default function GuidePage() {
 
         <div className="mt-12 text-center">
           <a
-            href="/demo"
+            href="/"
             className="bg-primary text-white px-6 py-3 rounded-full font-semibold text-lg hover:bg-primary/90 transition-all shadow-lg"
           >
             Try the Demo Now
