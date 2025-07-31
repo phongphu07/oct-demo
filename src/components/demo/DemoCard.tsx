@@ -54,9 +54,7 @@ export default function DemoCard() {
 
     const ext = file.name.toLowerCase();
     const isMultiFrame =
-      ext.endsWith(".tif") ||
-      ext.endsWith(".tiff") ||
-      ext.endsWith(".dcm");
+      ext.endsWith(".tif") || ext.endsWith(".tiff") || ext.endsWith(".dcm");
 
     if (isMultiFrame) {
       const formData = new FormData();
@@ -147,7 +145,7 @@ export default function DemoCard() {
       <div className="flex w-full gap-6 items-start">
         <div className="flex-1 min-w-0 shadow-lg border rounded-2xl bg-white p-4 md:p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            <div className="max-h-[70vh] overflow-auto">
+            <div className="max-h-[80vh] overflow-auto">
               <UploadBox
                 file={file}
                 previewUrl={activePreview}
@@ -168,9 +166,8 @@ export default function DemoCard() {
                   />
                 }
               />
-
             </div>
-            <div className="max-h-[70vh] overflow-auto">
+            <div className="max-h-[80vh] overflow-auto">
               <ResultPanel
                 resultUrl={activeResult}
                 resultLoading={resultLoading}
