@@ -45,18 +45,18 @@ export default function ModelSelector({ model, setModel, clearResult }: Props) {
   const models = [
     {
       id: "model1",
-      title: "Lumen + GuideWire + SideBranch + Stent",
+      title: "Multi-task detection (Lumen, Guidewire, Side Branch, Stent)",
       description:
         "Supports multi-task analysis: segmentation of lumen and side branch, prediction of stent and guidewire.",
     },
     {
       id: "model2",
-      title: "Calcium + EEL Detection",
+      title: "Calcium and EEL segmentation",
       description: "Detects calcium and external elastic lamina (EEL) regions.",
     },
     {
       id: "model3",
-      title: "Angio OCT FFR Estimation",
+      title: "FFR estimation from angiographic images",
       description:
         "Estimates fractional flow reserve (FFR) from Angio OCT images.",
     },

@@ -193,7 +193,10 @@ export default function DemoCard() {
         </div>
 
         <div className="w-[400px] flex-shrink-0 p-4 md:p-6 bg-white shadow-lg border rounded-2xl space-y-4">
-          <Label className="text-xl font-bold block">Select Model</Label>
+          <Label className="text-xl font-bold block">
+            {" "}
+            Select AI modules including:
+          </Label>
 
           <ModelSelector
             model={model}

@@ -19,8 +19,7 @@ export default function UploadBox({
   fileInputRef,
   onFileChange,
   onClear,
-  model,
-  extraContent
+  extraContent,
 }: UploadBoxProps) {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -36,7 +35,7 @@ export default function UploadBox({
   return (
     <div className="space-y-3">
       <Label className="text-base font-medium">
-        {model === "model3" ? "Upload Angiography Image" : "Upload OCT Image"}
+        Upload OCT or Angiography image
       </Label>
 
       <div>
@@ -44,9 +43,11 @@ export default function UploadBox({
           onDrop={!file ? handleDrop : undefined}
           onDragOver={!file ? (e) => e.preventDefault() : undefined}
           onClick={!file ? () => fileInputRef.current?.click() : undefined}
-          className={`w-full aspect-[4/3] bg-white ${file ? "border border-gray-300" : "border-2 border-dashed"
-            } rounded-md flex items-center justify-center overflow-hidden ${file ? "cursor-default" : "cursor-pointer hover:bg-gray-50"
-            } relative`}
+          className={`w-full aspect-[4/3] bg-white ${
+            file ? "border border-gray-300" : "border-2 border-dashed"
+          } rounded-md flex items-center justify-center overflow-hidden ${
+            file ? "cursor-default" : "cursor-pointer hover:bg-gray-50"
+          } relative`}
         >
           {previewLoading ? (
             <div className="flex flex-col items-center gap-1 text-sm text-gray-500">
@@ -88,13 +89,8 @@ export default function UploadBox({
           />
         </div>
 
-        {extraContent && (
-          <div className="mt-3">
-            {extraContent}
-          </div>
-        )}
+        {extraContent && <div className="mt-3">{extraContent}</div>}
       </div>
     </div>
   );
-
 }
