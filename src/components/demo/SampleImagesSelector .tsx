@@ -34,11 +34,10 @@ export default function SampleImagesSelector({
             className={`
                   w-24 h-24 rounded overflow-visible cursor-pointer 
                   transition box-border 
-                  ${
-                    activeIndex === index
-                      ? "ring-2 ring-blue-500 bg-white"
-                      : "ring-0"
-                  }
+                  ${activeIndex === index
+                ? "ring-2 ring-blue-500 bg-white"
+                : "ring-0"
+              }
                   `}
             style={{ margin: "2px" }}
           >

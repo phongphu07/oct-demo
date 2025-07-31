@@ -13,23 +13,23 @@ export default function GenerateActions({
   resultLoading,
   onGenerate,
 }: GenerateActionsProps) {
-  if (model === "model3") {
-    return (
-      <div className="flex flex-col md:flex-row gap-2 w-full">
-        <Button
-          className="md:w-1/2 w-full h-[40px]"
-          onClick={onGenerate}
-          disabled={!file || !model || resultLoading}
-        >
-          {resultLoading ? "Processing..." : "Generate"}
-        </Button>
+  // if (model === "model3") {
+  //   return (
+  //     <div className="flex flex-col md:flex-row gap-2 w-full">
+  //       <Button
+  //         className="md:w-1/2 w-full h-[40px]"
+  //         onClick={onGenerate}
+  //         disabled={!file || !model || resultLoading}
+  //       >
+  //         {resultLoading ? "Processing..." : "Generate"}
+  //       </Button>
 
-        <Button className="md:w-1/2 w-full h-[40px]" variant="outline" disabled>
-          Generate 3D (Coming Soon)
-        </Button>
-      </div>
-    );
-  }
+  //       <Button className="md:w-1/2 w-full h-[40px]" variant="outline" disabled>
+  //         Generate 3D (Coming Soon)
+  //       </Button>
+  //     </div>
+  //   );
+  // }
 
   return (
     <Button

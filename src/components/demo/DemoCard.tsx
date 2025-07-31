@@ -155,15 +155,17 @@ export default function DemoCard() {
                 onClear={handleClear}
                 model={model}
                 extraContent={
-                  <SampleImagesSelector
-                    sampleImages={sampleImages}
-                    activeIndex={activeSampleIndex}
-                    onSelect={async (index, file) => {
-                      await handleFileChange(file);
-                      setActiveSampleIndex(index);
-                      setMergedStrip("");
-                    }}
-                  />
+                  model !== "model3" && (
+                    <SampleImagesSelector
+                      sampleImages={sampleImages}
+                      activeIndex={activeSampleIndex}
+                      onSelect={async (index, file) => {
+                        await handleFileChange(file);
+                        setActiveSampleIndex(index);
+                        setMergedStrip("");
+                      }}
+                    />
+                  )
                 }
               />
             </div>
@@ -177,7 +179,7 @@ export default function DemoCard() {
             </div>
           </div>
 
-          {mergedStrip && (
+          {model !== "model3" && mergedStrip && (
             <MergedStripPreview
               mergedStrip={mergedStrip}
               setSelectedIndex={setSelectedIndex}
