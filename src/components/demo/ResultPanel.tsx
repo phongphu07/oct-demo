@@ -28,6 +28,7 @@ export default function ResultPanel({
             src={resultUrl}
             alt="Result"
             className="h-full w-auto object-contain"
+            onError={() => console.error("Failed to load image:", resultUrl)}
           />
         ) : (
           <span className="text-gray-400 text-sm">No results</span>
@@ -46,8 +47,8 @@ export default function ResultPanel({
                 <strong>Detected classes:</strong>{" "}
                 {typeof resultFrame.class_distribution === "object"
                   ? Object.entries(resultFrame.class_distribution)
-                    .map(([k, v]) => `${k}: ${v}`)
-                    .join(", ")
+                      .map(([k, v]) => `${k}: ${v}`)
+                      .join(", ")
                   : resultFrame.class_distribution || "None"}
               </div>
             </>
