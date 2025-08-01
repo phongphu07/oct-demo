@@ -7,7 +7,7 @@ const timeOut = 600_000;
 
 export const restTransport = () => {
   const client = axios.create({
-    baseURL: "https://a68cb1ecbc3c.ngrok-free.app",
+    baseURL: "https://flexible-bonefish-witty.ngrok-free.app",
     timeout: timeOut,
   });
 

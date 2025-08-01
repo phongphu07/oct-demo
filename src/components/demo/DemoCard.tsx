@@ -62,7 +62,7 @@ export default function DemoCard() {
       try {
         const res = await postUploadImage(formData);
         const data = res.data;
-        const baseUrl = "https://a68cb1ecbc3c.ngrok-free.app";
+        const baseUrl = "https://flexible-bonefish-witty.ngrok-free.app";
         const urls = data.image_urls.map((url: string) => baseUrl + url);
         const stripUrl = baseUrl + data.unrolled_url;
 
@@ -100,7 +100,7 @@ export default function DemoCard() {
     try {
       const res = await postPostPredict(formData);
       const data = res.data;
-      const baseUrl = "https://a68cb1ecbc3c.ngrok-free.app";
+      const baseUrl = "https://flexible-bonefish-witty.ngrok-free.app";
 
       if (data.is_tif && Array.isArray(data.frames)) {
         setResultFrames(
