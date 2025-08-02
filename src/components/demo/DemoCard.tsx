@@ -45,6 +45,15 @@ export default function DemoCard() {
   );
   const sampleImages = getSampleImages(model);
 
+
+  async function fetchImageBlobUrl(url: string): Promise<string> {
+    const res = await fetch(url, {
+      headers: { "ngrok-skip-browser-warning": "1" },
+    });
+    const blob = await res.blob();
+    return URL.createObjectURL(blob);
+  }
+
   const handleFileChange = async (file: File) => {
     setPreviewLoading(true);
     setFile(file);
@@ -53,8 +62,7 @@ export default function DemoCard() {
     setSelectedIndex(0);
 
     const ext = file.name.toLowerCase();
-    const isMultiFrame =
-      ext.endsWith(".tif") || ext.endsWith(".tiff") || ext.endsWith(".dcm");
+    const isMultiFrame = ext.endsWith(".tif") || ext.endsWith(".tiff") || ext.endsWith(".dcm");
 
     if (isMultiFrame) {
       const formData = new FormData();
@@ -63,8 +71,14 @@ export default function DemoCard() {
         const res = await postUploadImage(formData);
         const data = res.data;
         const baseUrl = "https://flexible-bonefish-witty.ngrok-free.app";
-        const urls = data.image_urls.map((url: string) => baseUrl + url);
-        const stripUrl = baseUrl + data.unrolled_url;
+
+        // ❗️Fetch qua blob để tránh ORB
+        const urls = await Promise.all(
+          data.image_urls.map((url: string) =>
+            fetchImageBlobUrl(baseUrl + url)
+          )
+        );
+        const stripUrl = await fetchImageBlobUrl(baseUrl + data.unrolled_url);
 
         setPreviewList(urls);
         setMergedStrip(stripUrl);
@@ -80,6 +94,7 @@ export default function DemoCard() {
       setPreviewLoading(false);
     }
   };
+
 
   const handleClear = () => {
     setFile(null);
@@ -103,14 +118,19 @@ export default function DemoCard() {
       const baseUrl = "https://flexible-bonefish-witty.ngrok-free.app";
 
       if (data.is_tif && Array.isArray(data.frames)) {
-        setResultFrames(
-          data.frames.map((f: any) => ({ ...f, url: baseUrl + f.url }))
+        const framesWithBlobs = await Promise.all(
+          data.frames.map(async (f: any) => ({
+            ...f,
+            url: await fetchImageBlobUrl(baseUrl + f.url),
+          }))
         );
+        setResultFrames(framesWithBlobs);
       } else if (data.image_url) {
+        const blobUrl = await fetchImageBlobUrl(baseUrl + data.image_url);
         setResultFrames([
           {
             frame_index: 0,
-            url: baseUrl + data.image_url,
+            url: blobUrl,
             summary: data.summary,
             num_boxes: data.num_boxes,
             boxes: data.boxes,
@@ -127,6 +147,7 @@ export default function DemoCard() {
       setResultLoading(false);
     }
   };
+
 
   const activePreview = previewList[selectedIndex] || null;
   const activeResult =
