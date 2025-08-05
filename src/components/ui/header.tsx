@@ -1,4 +1,4 @@
-import { BookOpen, HelpCircle, LogIn } from "lucide-react";
+import { BookOpen, HelpCircle, LogIn, Rotate3d } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -43,6 +43,14 @@ export default function Header() {
                   className="flex items-center text-sm font-medium hover:text-primary transition-colors"
                 >
                   <BookOpen className="mr-1 h-4 w-4" /> Demo
+                </a>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <a
+                  href="/3d"
+                  className="flex items-center text-sm font-medium hover:text-primary transition-colors"
+                >
+                  <Rotate3d className="mr-1 h-4 w-4" /> Demo 3D
                 </a>
               </NavigationMenuItem>
               <NavigationMenuItem>
