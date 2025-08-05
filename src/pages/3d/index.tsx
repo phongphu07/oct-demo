@@ -28,13 +28,13 @@ export default function ThreeD() {
     };
   }, [objUrl]);
 
-  // async function fetchBlobUrl(url: string): Promise<string> {
-  //   const res = await fetch(url, {
-  //     headers: { "ngrok-skip-browser-warning": "1" },
-  //   });
-  //   const blob = await res.blob();
-  //   return URL.createObjectURL(blob);
-  // }
+  async function fetchBlobUrl(url: string): Promise<string> {
+    const res = await fetch(url, {
+      headers: { "ngrok-skip-browser-warning": "1" },
+    });
+    const blob = await res.blob();
+    return URL.createObjectURL(blob);
+  }
 
   const handleSubmit = async () => {
     if (!file) {
@@ -49,8 +49,8 @@ export default function ThreeD() {
       const result = await postUploadImage(formData);
 
       if (result?.data?.obj_url) {
-        // const blobUrl = await fetchBlobUrl(result.data.obj_url);
-        setObjUrl(result.data.obj_url);
+        const blobUrl = await fetchBlobUrl(result.data.obj_url);
+        setObjUrl(blobUrl);
         toastSuccess("3D model generated successfully.");
       } else {
         throw new Error("Invalid response from server");
