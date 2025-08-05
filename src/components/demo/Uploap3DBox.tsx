@@ -119,7 +119,7 @@ export default function Upload3DBox({
           } relative`}
         >
           {!file ? (
-            <>
+            <div className="flex flex-col items-center justify-center text-center">
               <CloudUpload className="w-12 h-12 text-sky-400 mb-2" />
               <p className="text-black font-semibold">
                 Drag and drop Tif/DCM here
@@ -127,7 +127,7 @@ export default function Upload3DBox({
               <p className="text-sm text-sky-300">
                 or <span className="underline text-amber-400">upload here</span>
               </p>
-            </>
+            </div>
           ) : previewUrl ? (
             <>
               {loading && (
