@@ -30,8 +30,16 @@ export default function ThreeD() {
 
   async function fetchBlobUrl(url: string): Promise<string> {
     const res = await fetch(url, {
-      headers: { "ngrok-skip-browser-warning": "1" },
+      method: "GET",
+      headers: {
+        "ngrok-skip-browser-warning": "1",
+        Accept: "model/obj",
+      },
+      mode: "cors",
     });
+
+    if (!res.ok) throw new Error(`Failed to fetch .obj file: ${res.status}`);
+
     const blob = await res.blob();
     return URL.createObjectURL(blob);
   }
