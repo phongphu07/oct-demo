@@ -8,6 +8,7 @@ import AboutPage from "../pages/about";
 import DemoPage from "../pages/demo";
 import GuidePage from "../pages/guide";
 import LoginPage from "../pages/login";
+import ThreeD from "../pages/3d";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginPage />,
+      },
+      {
+        path: "/3d",
+        element: <ThreeD />,
       },
     ],
   },
