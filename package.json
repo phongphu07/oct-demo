@@ -37,7 +37,8 @@
     "sass": "^1.89.2",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.11",
-    "three": "^0.179.1"
+    "three": "^0.179.1",
+    "utif": "^3.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
@@ -47,6 +48,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@types/react-router-dom": "^5.3.3",
+    "@types/utif": "^3.0.5",
     "@vitejs/plugin-react-swc": "^3.10.2",
     "eslint": "^9.30.1",
     "eslint-plugin-react-hooks": "^5.2.0",

@@ -1,10 +1,9 @@
-import colormap from "colormap";
-import * as GeoTIFF from "geotiff";
+import * as UTIF from "utif";
 import { CloudUpload, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface Upload3DBoxProps {
-  onFileChange: (file: File) => void;
+  onFileChange: (file: File) => void; 
   onClear: () => void;
   extraContent?: React.ReactNode;
   inputRef: React.RefObject<HTMLInputElement | null>;
@@ -20,12 +19,6 @@ export default function Upload3DBox({
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const colors = colormap({
-    colormap: "hot",
-    nshades: 256,
-    format: "rgba",
-    alpha: 1,
-  });
   const handleFileSelect = async (selectedFile: File) => {
     setFile(selectedFile);
     onFileChange(selectedFile);
@@ -33,49 +26,30 @@ export default function Upload3DBox({
 
     try {
       const arrayBuffer = await selectedFile.arrayBuffer();
-      const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
-      const image = await tiff.getImage(0);
-      const raster = await image.readRasters({ interleave: true });
-      const width = image.getWidth();
-      const height = image.getHeight();
+      const ifds = UTIF.decode(arrayBuffer);
+
+      if (!ifds.length) throw new Error("No IFDs found in TIFF");
+
+      UTIF.decodeImage(arrayBuffer, ifds[0]);
+      const rgba = UTIF.toRGBA8(ifds[0]);
+
+      const width = ifds[0].width;
+      const height = ifds[0].height;
 
       const canvas = document.createElement("canvas");
       canvas.width = width;
       canvas.height = height;
       const ctx = canvas.getContext("2d");
-      if (ctx) {
-        const imageData = ctx.createImageData(width, height);
 
-        const isArray = Array.isArray(raster);
-        const data = raster as Uint8Array | number[];
+      if (!ctx) throw new Error("Cannot get canvas context");
 
-        if (isArray || data.length / (width * height) === 3) {
-          for (let i = 0; i < width * height; i++) {
-            const r = data[i * 3 + 0];
-            const g = data[i * 3 + 1];
-            const b = data[i * 3 + 2];
-            imageData.data[i * 4 + 0] = r;
-            imageData.data[i * 4 + 1] = g;
-            imageData.data[i * 4 + 2] = b;
-            imageData.data[i * 4 + 3] = 255;
-          }
-        } else {
-          for (let i = 0; i < width * height; i++) {
-            const value = data[i]; // 0–255
-            const [r, g, b, a] = colors[value];
+      const imageData = new ImageData(new Uint8ClampedArray(rgba), width, height);
+      ctx.putImageData(imageData, 0, 0);
 
-            imageData.data[i * 4 + 0] = r;
-            imageData.data[i * 4 + 1] = g;
-            imageData.data[i * 4 + 2] = b;
-            imageData.data[i * 4 + 3] = a * 255;
-          }
-        }
-
-        ctx.putImageData(imageData, 0, 0);
-        setPreviewUrl(canvas.toDataURL());
-      }
+      setPreviewUrl(canvas.toDataURL());
     } catch (err) {
-      console.error("Failed to preview TIF:", err);
+      console.error("❌ Failed to render TIFF preview:", err);
+      setPreviewUrl(null);
     }
 
     setLoading(false);
@@ -100,8 +74,8 @@ export default function Upload3DBox({
 
   useEffect(() => {
     if (inputRef?.current?.value === "") {
-      setPreviewUrl(null);
       setFile(null);
+      setPreviewUrl(null);
     }
   }, [inputRef?.current?.value]);
 
@@ -122,7 +96,7 @@ export default function Upload3DBox({
             <div className="flex flex-col items-center justify-center text-center">
               <CloudUpload className="w-12 h-12 text-sky-400 mb-2" />
               <p className="text-black font-semibold">
-                Drag and drop Tif/DCM here
+                Drag and drop TIF file here
               </p>
               <p className="text-sm text-sky-300">
                 or <span className="underline text-amber-400">upload here</span>
@@ -132,22 +106,17 @@ export default function Upload3DBox({
             <>
               {loading && (
                 <div className="absolute inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-10 rounded-lg">
-                  <div className="flex flex-col items-center">
-                    <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-sky-400"></div>
-                    <p className="mt-2 text-sm text-white animate-pulse">
-                      Rendering preview...
-                    </p>
-                  </div>
+                  <p className="text-sm text-white animate-pulse">Rendering preview...</p>
                 </div>
               )}
               <img
                 src={previewUrl}
-                alt="Preview"
+                alt="TIFF Preview"
                 className="h-full max-w-[800px] object-contain"
               />
             </>
           ) : (
-            <p className="text-white">File ready</p>
+            <p className="text-white">File selected: {file.name}</p>
           )}
 
           {file && (
